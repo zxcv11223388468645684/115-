@@ -1,0 +1,191 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Noto Serif TC", serif;
+}
+
+body {
+  background: #000;
+  height: 100vh;
+  overflow: hidden;
+  color: #ddd;
+}
+
+
+
+@keyframes rain {
+  from { background-position: 0 0; }
+  to { background-position: 0 15px; }
+}
+
+/* 黑暗手電筒 */
+
+
+/* Jump Scare */
+#jumpScare {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#jumpScare img {
+  width: 80%;
+  max-width: 500px;
+  animation: zoom 0.3s forwards;
+}
+
+@keyframes zoom {
+  from { transform: scale(0.3); }
+  to { transform: scale(1.2); }
+}
+
+/* 眼球 */
+.eye {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 60px;
+  background: #eee;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.pupil {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #000;
+  border-radius: 50%;
+  top: 15px;
+  left: 45px;
+}
+
+/* 房間 */
+.room {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  letter-spacing: 0.3em;
+  animation: flicker 2.5s infinite;
+}
+
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(2, 120px);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.symbol {
+  background: #200;
+  border: 1px solid #700;
+  color: #f55;
+  font-size: 1.6rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+@keyframes flicker {
+  50% { opacity: 0.3; }
+}
+
+/* 血雨容器 */
+#bloodRain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* 單一血滴 */
+.blood-drop {
+  position: absolute;
+  top: -20px;
+  width: 3px;
+  height: 15px;
+  background: linear-gradient(
+    to bottom,
+    rgba(180, 0, 0, 0.9),
+    rgba(120, 0, 0, 0.4)
+  );
+  border-radius: 50%;
+  animation-name: fall;
+  animation-timing-function: linear;
+}
+
+/* 血滴下落 */
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+/* 眼球本體升級 */
+.eye {
+  position: fixed;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 80px;
+  background: #eee;
+  border-radius: 50%;
+  z-index: 3;
+  overflow: hidden;
+  animation: eyeTwitch 6s infinite;
+}
+
+/* 眼白血絲 */
+.veins {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(150,0,0,0.3), transparent 40%),
+    radial-gradient(circle at 70% 40%, rgba(150,0,0,0.25), transparent 45%);
+  mix-blend-mode: multiply;
+}
+
+/* 瞳孔 */
+.pupil {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(circle, #000 40%, #300 70%);
+  border-radius: 50%;
+  top: 26px;
+  left: 66px;
+  transition: transform 0.2s ease;
+}
+
+/* 不規則眨眼 */
+@keyframes blink {
+  0%, 95%, 100% { height: 80px; }
+  96%, 99% { height: 8px; }
+}
+
+/* 神經抽動 */
+@keyframes eyeTwitch {
+  0%, 100% { transform: translateX(-50%); }
+  92% { transform: translateX(-48%); }
+  94% { transform: translateX(-52%); }
+}
+
+/* 恐嚇放大 */
+.eye.angry {
+  animation: blink 2.5s infinite;
+  box-shadow: 0 0 30px rgba(200,0,0,0.6);
+}

@@ -1,0 +1,45 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(./img/GqsE8krWwAAFDKM.jpg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 防止滾動條 */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    object-position: center;
+}
+
+#text-display {
+    font-size: 3rem;
+    color: red;    /* 將這裡改為 red 或 #FF0000 */
+    font-weight: bold;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.05s linear;
+    user-select: none;
+    /* 如果想要更有恐怖感，可以加入紅色的發光效果 */
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.8); 
+}
+
+/* 初始狀態：隱藏 */
+.hidden {
+    display: none;
+    /* 或者使用 opacity: 0; pointer-events: none; */
+}
+
+/* 確保白色畫面覆蓋全螢幕 */
+#final-white-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 9999;
+}

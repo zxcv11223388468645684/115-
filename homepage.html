@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>極致恐怖氛圍</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="main-site">
+  <header>
+    <h1>咒</h1>
+    <nav>
+      <a href="#" onclick="showPage('home')">首頁</a>
+      <a href="#" onclick="showPage('story')">怪談</a>
+      <a href="#" onclick="showPage('gallery')">鬼影圖集</a>
+      <a href="#" onclick="showPage('room')">房間探索</a>
+    </nav>
+  </header>
+
+  <div id="home" class="page active">
+    <div class="hero">
+      <h2>你敢往前嗎？</h2>
+    </div>
+
+    <section>
+      <h2>恐懼從這裡開始</h2>
+
+      <div class="card-container">
+        <div class="card" onmouseenter="playSfx()"><h3>🔪 迫近的危機</h3></div>
+        <div class="card" onmouseenter="playSfx()"><h3>👁‍🗨 被監視</h3></div>
+        <div class="card" onmouseenter="playSfx()"><h3>🩸 無法逃離</h3></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="story" class="page">
+    <section>
+      <h2>👻 都市怪談</h2>
+      <p>高雄吳姓一家六口長期迷信住宅式神壇，因「被附身」而集體起乩，互指惡靈，用香互灼、餵食排泄物等方式「驅魔」，最終長女被虐待至死，家人被依遺棄致死起訴，精神科醫師鑑定為「集體性妄想症」。電影將此真實事件中的邪教元素、民俗信仰與詛咒概念融入，創造出主角若男團隊觸怒邪靈、被詛咒追殺的情節，讓觀眾身歷其境。 </p>
+    </section>
+  </div>
+
+  <div id="gallery" class="page">
+    <section>
+      <h2>📷 鬼影圖集</h2>
+      <a href="ooo.html">
+      <img src="./img/F00wfNgaAAA0Hun.jpg" alt="" class="pap">
+      </a>
+    </section>
+  </div>
+
+  <div id="room" class="page">
+    <section>
+      <h2>🚪 房間探索</h2>
+      <p>請慢慢探索……這裡不是你想的那麼安全。</p>
+      <a href="index01.html">
+            <img src="./img/01.webp" alt="" class="qwq">
+      </a>
+      <a href="scary.html">
+        <img src="./img/d6444834.jpg" alt="" class="qwq">
+      </a>
+    </section>
+  </div>
+
+  <audio id="sfx" src="https://cdn.pixabay.com/audio/2022/03/15/audio_c9c1c196fb.mp3"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火佛修一 心薩嘸哞</title>
+    <link rel="stylesheet" href="scary.css">
+</head>
+<body>
+    <div id="start-gate">
+        <button id="btn-sacrifice">你願意分擔嗎？</button>
+    </div>
+
+    <main id="game-view" class="hidden">
+        <div class="vhs-scanlines"></div>
+        <h2 id="hint-text">唸出祂的名字...</h2>
+        
+        <div id="mantra-container">
+            </div>
+
+        <div id="red-overlay"></div>
+    </main>
+
+    <div id="final-eye-layer" class="hidden">
+        <div class="mother-eye"></div>
+        <p class="whisper-text">火佛修一 心薩嘸哞...</p>
+    </div>
+        <div id="jumpscare-image"></div>
+
+    <audio id="audio-bg" loop src="https://www.soundjay.com/ambient/dark-ambient-texture-01.mp3"></audio>
+    <audio id="audio-scream" src="https://www.soundjay.com/human/man-screaming-01.mp3"></audio>
+
+
+    <script src="scary.js"></script>
+</body>
+</html>
