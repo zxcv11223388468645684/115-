@@ -188,3 +188,9 @@ section {
   object-fit: cover;   /* 避免圖片變形 */
   display: flex;
 }
+
+.red-text {
+  color: darkred;
+  text-shadow: 0 0 5px red;
+}
+
