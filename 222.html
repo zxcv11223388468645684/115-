@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禁忌地下室 - 最終逃脫版</title>
+    <style>
+        /* 基本頁面樣式：設定全黑背景與深紅色字體營造恐怖感 */
+        body {
+            background-color: #050505;
+            color: #b00; /* 經典血紅色 */
+            font-family: 'Courier New', Courier, monospace; /* 打字機字體增加復古感 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* 防止捲軸出現 */
+        }
+
+        /* 遊戲主容器：使用徑向漸變模擬「手電筒照射」效果 */
+        #game-container {
+            width: 800px;
+            height: 600px;
+            border: 2px solid #333;
+            position: relative;
+            background: radial-gradient(circle, #222 0%, #000 80%);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+        }
+
+        #timer { font-size: 32px; margin-bottom: 20px; font-weight: bold; }
+        .hidden { display: none !important; } /* 通用隱藏樣式 */
+
+        /* 按鈕樣式：黑色底色與紅色邊框，Hover時會變色 */
+        button {
+            background: #111;
+            color: #b00;
+            border: 1px solid #600;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: 0.3s;
+        }
+        button:hover { background: #400; color: white; }
+
+        input {
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* 開始畫面：最上層全黑遮罩 */
+        #start-screen {
+            position: absolute;
+            inset: 0;
+            background: black;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 驚嚇層 (Jump Scare)：預設隱藏，觸發時顯示鬼圖 */
+        #jumpscare {
+            position: absolute;
+            inset: 0;
+            background: black;
+            z-index: 500; /* 最高層級，覆蓋所有畫面 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #jumpscare img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 結局畫面：設定捲動動畫容器 */
+        #ending-screen {
+            position: absolute;
+            inset: 0;
+            background: black;
+            z-index: 300;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* 結局捲動文字：由下往上移動 */
+        #scrolling-text {
+            position: absolute;
+            top: 100%;
+            width: 80%;
+            text-align: center;
+            color: #ccc;
+            line-height: 2.5;
+            animation: scrollUp 15s linear forwards; /* 15秒捲動完成後停在終點 */
+        }
+
+        /* 文字捲動動畫定義 */
+        @keyframes scrollUp {
+            0% { top: 100%; }
+            100% { top: -40%; }
+        }
+
+        /* 畫面震動動畫定義 */
+        @keyframes shake {
+            0% { transform: translate(5px, 5px); }
+            20% { transform: translate(-5px, -5px); }
+            40% { transform: translate(5px, -5px); }
+            60% { transform: translate(-5px, 5px); }
+            100% { transform: translate(0, 0); }
+        }
+        .shaking { animation: shake 0.1s infinite; } /* 驚嚇時套用的類別 */
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="start-screen">
+            <h1>禁忌地下室</h1>
+            <p>聽說進來的人，沒有一個能活著出去...</p>
+            <button onclick="startGame()">踏入黑暗</button>
+        </div>
+
+        <div id="game-play">
+            <div id="timer">剩餘時間: <span id="time">05:00</span></div>
+            <div id="room">
+                <h2>陰暗的地下室</h2>
+                <p>門被反鎖了。空氣中瀰漫著鐵鏽味。</p>
+                <div id="interactive-area">
+                    <button onclick="checkObject('note')">查看破舊紙條</button>
+                    <button onclick="checkObject('safe')">檢查牆角箱子</button>
+                </div>
+                <div id="input-section" class="hidden" style="margin-top: 50px;">
+                    <p>輸入 4 位數密碼以逃脫：</p>
+                    <input type="text" id="password" maxlength="4" placeholder="????">
+                    <br><br>
+                    <button onclick="unlockDoor()">旋轉把手</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="jumpscare" class="hidden">
+            <img src="./img/ghost.jpeg" alt="Ghost">
+        </div>
+
+        <div id="ending-screen" class="hidden">
+            <div id="scrolling-text">
+                <h2>逃出生天...？</h2>
+                <p>你拼命地衝出那可怕的洞穴，</p>
+                <p>冰冷的空氣瞬間灌入肺部。</p>
+                <p>地穴裡的哀嚎聲似乎還在耳邊迴盪...</p>
+                <br>
+                <p>直到看見清晨的第一縷陽光，</p>
+                <p>你才發現，自己的口袋裡多了一張紙條，</p>
+                <p>上面赫然寫著：</p>
+                <h3 style="color: red;">「我們很快會再見面。」</h3>
+                <br><br>
+                <p>— 遊戲結束 —</p>
+                <button onclick="finalSCARE()">重新開始</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="scream-sound" src="https://www.soundjay.com/human/sounds/human-scream-01.mp3"></audio>
+
+    <script>
+        let timeLeft = 300; // 5分鐘（300秒）
+        let timerInterval;
+
+        // 初始化遊戲：隱藏開始畫面並啟動計時器
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            startTimer();
+        }
+
+        // 計時器函數：每秒更新一次時間顯示
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const min = Math.floor(timeLeft / 60);
+                const sec = timeLeft % 60;
+                document.getElementById('time').innerText = 
+                    `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+                
+                // 時間耗盡則觸發失敗驚嚇
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    triggerJumpScare("你太慢了... 他來了。");
+                }
+            }, 1000);
+        }
+
+        // 物品互動檢查邏輯
+        function checkObject(obj) {
+            if (obj === 'note') {
+                // 顯示隱藏的故事謎題與輸入框
+                alert("紙條上沾滿了血跡，寫著：'十月十一日：醫院裡多了一個病人，住在 1 號病房，他總是不說話。 十月十二日：他開始尖叫。護理長說他已經 9 天沒睡覺了。 十月十三日：凌晨 8 點，我發現他病床下的牆上刻滿了符號。 十月十四日：他逃跑了，只在地上留下了 4 個血手印。'");
+                document.getElementById('input-section').classList.remove('hidden');
+            } else if (obj === 'safe') {
+                // 檢查箱子有 30% 機率直接觸發鬼臉驚嚇
+                if (Math.random() < 0.3) {
+                    triggerJumpScare();
+                } else {
+                    alert("箱子裡只有一些頭髮跟一個奇怪的咒印。");
+                }
+            }
+        }
+
+        // 驚嚇核心邏輯：顯示圖片、播放聲音、畫面震動
+        function triggerJumpScare(msg) {
+            const jumpscare = document.getElementById('jumpscare');
+            const scream = document.getElementById('scream-sound');
+            const container = document.getElementById('game-container');
+
+            jumpscare.classList.remove('hidden'); // 顯示鬼圖
+            container.classList.add('shaking'); // 套用震動動畫
+            scream.play().catch(() => {}); // 播放女生尖叫音效
+
+            // 1.2 秒後隱藏驚嚇
+            setTimeout(() => {
+                jumpscare.classList.add('hidden');
+                container.classList.remove('shaking');
+                // 如果有傳入訊息（例如時間到），則提示並重新載入遊戲
+                if (msg) {
+                    alert(msg);
+                    window.location.href = 'index.html'; 
+                }
+            }, 1200);
+        }
+
+        // 解密邏輯：檢查輸入是否正確
+        function unlockDoor() {
+            const pw = document.getElementById('password').value;
+            if (pw === '1984') { // 正確密碼
+                clearInterval(timerInterval); // 停止計時
+                document.getElementById('game-play').classList.add('hidden'); // 隱藏主介面
+                document.getElementById('ending-screen').classList.remove('hidden'); // 顯示捲動結局
+            } else {
+                // 錯誤密碼懲罰：扣除時間 30 秒並嚇人
+                timeLeft = Math.max(0, timeLeft - 30);
+                triggerJumpScare("密碼錯誤... 有東西在黑暗中咆哮！");
+            }
+        }
+
+        // 最終重新開始按鈕：先嚇人 2 秒後再跳轉首頁
+        function finalSCARE() {
+            const jumpscare = document.getElementById('jumpscare');
+            const scream = document.getElementById('scream-sound');
+            const container = document.getElementById('game-container');
+
+            jumpscare.classList.remove('hidden');
+            container.classList.add('shaking');
+            
+            scream.currentTime = 0; // 重置音效進度
+            scream.play().catch(() => {});
+
+            // 2 秒延遲後進行頁面跳轉
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
